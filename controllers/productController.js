@@ -192,3 +192,7 @@ export async function getProductById(req,res) {
         })
     }
 }
+
+export async function searchProducts(req,res) {
+    
+}
