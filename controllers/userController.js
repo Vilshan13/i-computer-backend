@@ -23,7 +23,7 @@ export function createUser(req,res){
         }
     ).catch(
         ()=>{
-            res.json({
+            res.Status(404).json({
                 message:"User creation Failed!"
             })
         }
@@ -36,7 +36,7 @@ export function loginUser(req,res){
     }).then(
         (User)=>{
             if(User == null){
-                res.json({
+                res.Status(404).json({
                     message : "User with given Email not Found!"
                 })
             }
@@ -45,6 +45,8 @@ export function loginUser(req,res){
                 
                 if(isPasswordValid){
 
+                    //check if attemps are more than 3 times so, we do not send this token
+
                     const token = jwt.sign({
                         email :  User.email,
                         firstName : User.firstName,
@@ -52,7 +54,7 @@ export function loginUser(req,res){
                         role : User.role,
                         Image : User.image,
                         isEmailVerified : User.isEmailverified
-                    },"i-computers-54")
+                    },process.env.JWT_SECRET)
 
                     console.log(token)
 
@@ -61,10 +63,12 @@ export function loginUser(req,res){
                     res.json({
                         message : "Login Successfully",
                         token:token,
+                        role : user.role,
                     })
                 }else{
-                    res.json({
+                    res.Status(404).json({
                         message : "Invalid Password"
+                        //we should record in data base of this failed attempt for the specific email
                     })
                 }
 

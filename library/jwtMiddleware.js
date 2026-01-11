@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken"
+import { configDotenv } from "dotenv"
 export default function authorizeUser(req,res, next ){
         
         const header = req.header("Authorization")
@@ -7,7 +8,7 @@ export default function authorizeUser(req,res, next ){
             const token = header.replace("Bearer ","")
             console.log(token)
 
-            Jwt.Verify(token,"i-computers-54",
+            Jwt.Verify(token,process.env.JWT_SECRET,
                 (err,decoded)=>{
 
                     if(decoded == null){

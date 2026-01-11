@@ -4,12 +4,17 @@ import userRouter from './router/userRouter.js'
 import productRouter from './router/productRouter.js'
 import jsonwebtoken from 'jsonwebtoken'
 import authorizeUser from './library/jwtMiddleware.js'
+import cors from 'cors' 
+import { configDotenv } from 'dotenv'
+
 
 const app = express()
 
+app.use(cors())
+
 app.use(express.json())
 
-const mongoURI = "mongodb+srv://adminshan:IMA30n%40@cluster0.6yufxrf.mongodb.net/?appName=i-computers-backend"
+const mongoURI = process.env.MONGO_URI
 
 mongoose.connect(mongoURI).then(
     ()=>{
@@ -21,9 +26,9 @@ mongoose.connect(mongoURI).then(
     }
 )
 
-app.use("/users",userRouter)
+app.use("/users",userRouter)//api
 app.use(authorizeUser);
-app.use("/products",productRouter)
+app.use("/products",productRouter)//api
 
 function start(){
     console.log("Server started on port 5001")
