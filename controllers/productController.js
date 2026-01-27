@@ -2,12 +2,14 @@ import Product from "../models/product.js";
 import { isAdmin } from "./userController.js";
 
 export async function createProduct(req,res){
+    
 
     if(! isAdmin(req)){
         res.Status(401).json({
             message : "Access denied. Admin Only"
         })
         return;
+        console.log(req.body.images)
     }
     try{
         const existingProduct = await Product.findOne({
